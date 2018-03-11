@@ -6,10 +6,9 @@ target 'Weather' do
   use_frameworks!
 
   # Pods for Weather
-  pod 'Alamofire'
-  pod 'SwiftyJSON', '3.1.4'
-  pod 'SDWebImage'
-
+      pod 'Alamofire'
+      pod 'SwiftyJSON', '3.1.4'
+      pod 'SDWebImage'
   target 'WeatherTests' do
     inherit! :search_paths
     # Pods for testing
