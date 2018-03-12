@@ -39,15 +39,11 @@ class WeatherViewController: UIViewController{
         didSet {
             presenter?.currentWeather.observe {
                 [unowned self] (results) in
-                if results.count > 0 {
-                   self.currentWeatherData = results
-                }
+                self.currentWeatherData = results.count > 0 ? results : []
             }
             presenter?.weatherForecast.observe {
                 [unowned self] (results) in
-                if results.count > 0 {
-                   self.forecastWeatherData = results
-                }
+                self.forecastWeatherData =  results.count > 0 ? results : []
                 self.tableView.reloadData()
                 self.activityIndicator.stopAnimating()
             }
