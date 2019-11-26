@@ -33,22 +33,26 @@ class WeatherService: WeatherServiceProtocol {
                 if response.result.error == nil {
                     self.weather.removeAll()
                     guard let data = response.data else {return}
-                    let json = JSON(data: data)
-                    let list = json["list"].arrayValue
-                    //debugPrint(response.result)
-                    for item in list.dropFirst(1) {
-                        let temp_day = item["dt"].stringValue
-                        let temp_min  = item["temp"]["min"].stringValue
-                        let temp_max  = item["temp"]["max"].stringValue
-                        let weather = item["weather"].array
-                        let description = weather![0]["description"].stringValue
-                        let icon = weather![0]["icon"].stringValue
-                        let temp = ""
-                        let name =  ""
-                        let forecastWeather = Weather(temperature: temp,temperatureMin: temp_min, temperatureMax: temp_max, tempDay: temp_day, summary: description, icon: icon, locationName: name)
-                        self.weather.append(forecastWeather)
+                    do {
+                        let json = try JSON(data: data)
+                        let list = json["list"].arrayValue
+                        //debugPrint(response.result)
+                        for item in list.dropFirst(1) {
+                            let temp_day = item["dt"].stringValue
+                            let temp_min  = item["temp"]["min"].stringValue
+                            let temp_max  = item["temp"]["max"].stringValue
+                            let weather = item["weather"].array
+                            let description = weather![0]["description"].stringValue
+                            let icon = weather![0]["icon"].stringValue
+                            let temp = ""
+                            let name =  ""
+                            let forecastWeather = Weather(temperature: temp,temperatureMin: temp_min, temperatureMax: temp_max, tempDay: temp_day, summary: description, icon: icon, locationName: name)
+                            self.weather.append(forecastWeather)
+                        }
+                        completionHandler(WeatherDataResult.Success(self.weather))
+                    }catch {
+                        completionHandler(WeatherDataResult.Failure(DATA_ERROR))
                     }
-                    completionHandler(WeatherDataResult.Success(self.weather))
                 }else{
                     completionHandler(WeatherDataResult.Failure(DATA_ERROR))
                 }
@@ -66,17 +70,21 @@ class WeatherService: WeatherServiceProtocol {
                 if response.result.error == nil {
                     self.weather.removeAll()
                     guard let data = response.data else {return}
-                    let json = JSON(data: data)
-                    let name = json["name"].stringValue
-                    let temp = json["main"]["temp"].stringValue
-                    let temp_day = json["dt"].stringValue
-                    let temp_min  = json["main"]["temp_min"].stringValue
-                    let temp_max  = json["main"]["temp_max"].stringValue
-                    let weather = json["weather"].arrayValue
-                    let description = weather[0]["description"].stringValue
-                    let icon = weather[0]["icon"].stringValue
-                    let currentWeather = Weather(temperature: temp,temperatureMin: temp_min, temperatureMax: temp_max, tempDay: temp_day, summary: description, icon: icon, locationName: name)
-                    completionHandler(WeatherDataResult.Success([currentWeather]))
+                    do {
+                        let json = try JSON(data: data)
+                        let name = json["name"].stringValue
+                        let temp = json["main"]["temp"].stringValue
+                        let temp_day = json["dt"].stringValue
+                        let temp_min  = json["main"]["temp_min"].stringValue
+                        let temp_max  = json["main"]["temp_max"].stringValue
+                        let weather = json["weather"].arrayValue
+                        let description = weather[0]["description"].stringValue
+                        let icon = weather[0]["icon"].stringValue
+                        let currentWeather = Weather(temperature: temp,temperatureMin: temp_min, temperatureMax: temp_max, tempDay: temp_day, summary: description, icon: icon, locationName: name)
+                        completionHandler(WeatherDataResult.Success([currentWeather]))
+                    } catch {
+                        completionHandler(WeatherDataResult.Failure(DATA_ERROR))
+                    }
                 }else{
                     completionHandler(WeatherDataResult.Failure(DATA_ERROR))
                 }

@@ -7,7 +7,7 @@ target 'Weather' do
 
   # Pods for Weather
       pod 'Alamofire'
-      pod 'SwiftyJSON', '3.1.4'
+      pod 'SwiftyJSON', '4.0'
       pod 'SDWebImage'
   target 'WeatherTests' do
     inherit! :search_paths

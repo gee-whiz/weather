@@ -103,7 +103,7 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return  self.forecastWeatherData.count > 0 ?  UITableViewAutomaticDimension : 0
+        return  self.forecastWeatherData.count > 0 ?  UITableView.automaticDimension : 0
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
